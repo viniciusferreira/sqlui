@@ -124,6 +124,8 @@ SHOW TABLES Syntax
  
 	SHOW TABLES
 	
+ Example
+ 
 	Query:
 		SHOW TABLES
 	
@@ -141,6 +143,8 @@ CREATE TABLE Syntax
  Creates a new table.
  
 	CREATE {tbl_name({col[,col...]})
+	
+ Example
 
 	Query:
 		CREATE TABLE test
@@ -158,7 +162,9 @@ DROP TABLE Syntax
  Delete a table.
  
 	DROP TABLE {tbl_name}
-	
+
+ Example
+ 
 	Query:
 		DROP TABLE test
 	
@@ -177,6 +183,8 @@ ALTER TABLE Syntax
 	ALTER TABLE {tbl_name}
 		{ADD|DROP col_name[col_name...]}|{CHANGE col_name new_name[,col_name new_name...]}
 
+ Example
+ 
 	Query:
 		ALTER TABLE test ADD field
 			
@@ -199,7 +207,9 @@ TRUNCATE Syntax
  Truncate a table.
 
 	TRUNCATE {tbl_name}
-	
+
+ Example
+
 	Query:
 		TRUNCATE test
 	
@@ -222,7 +232,9 @@ SELECT Syntax
 				[LIMIT {[offset,]row_count}]
 				[INTO 'file_name']
 				
-				
+
+ Example
+
 	Query:
 		SELECT tbl1.col,tbl2.col FROM tbl1 JOIN tbl2 ON tbl2.col=tbl1.col LIMIT 2
 	
@@ -244,7 +256,9 @@ COUNT Syntax
  Return a count matches a query.
  
 	COUNT(col_name[,col_name...]|*)
-	
+
+ Example
+ 
 	Query:
 		SELECT COUNT(*) FROM tbl1
 		
@@ -264,7 +278,7 @@ WHERE Syntax
 		[{AND|OR} {tbl_name.col_name|col_name}{operator}{'string'}...]
 	
 
-Where operators are.
+ Where operators are.
 
 	= 	-	equal
 	<>	-	not equal
@@ -274,6 +288,8 @@ Where operators are.
 	>=	-	greater than or equal
 	<=	-	less than or equal
 	LIKE	-	search for a pattern	
+
+ Example
 
 	Query:
 		SELECT col FROM tbl WHERE col='needle'
@@ -301,6 +317,8 @@ LIKE Syntax
 	'%string'	-	ends
 	'%string%'	-	contains
 
+ Example
+
 	Query:
 		SELECT col FROM tbl WHERE col LIKE 'ne%'
 	
@@ -324,6 +342,8 @@ INSERT INTO Syntax
  
 	INSERT INTO {tbl_name[(col_name,...)]}
 		VALUES{('string'[,'string'...])}[,('string'[,'string'...])]
+
+ Example
 
 	Query:
 		INSERT INTO tbl(id,name) VALUES('0','name 0')
@@ -354,7 +374,9 @@ UPDATE Syntax
  
 	UPDATE {tbl_name} SET col_name1={'string'}[,col_name2={'string'}...]
 		[WHERE {where_condition}]
-		
+
+ Example
+
 	Query: 
 		UPDATE tbl SET col1='string',col2="string" WHERE col1='test'
 	
@@ -372,14 +394,12 @@ DELETE Syntax
  
 	DELETE {col_name|*} FROM {tbl_name} [WHERE where_condition]
 
+ Example
 
 	Query:
-	
 		DELETE col FROM tbl WHERE col='test'
 
-
 	Return:
-	
 		Array(
 			[notice] => Array (
 				[0] => Command Successfully
