@@ -118,7 +118,7 @@ And this print
  All posted values should be treated as strings between single or double quotes.
 
 
-##### 1. SHOW TABLES Syntax
+###### SHOW TABLES Syntax
 
  Displays database tables.
  
@@ -138,7 +138,7 @@ And this print
 		)
 
 
-##### 2. CREATE TABLE Syntax
+###### CREATE TABLE Syntax
 
  Creates a new table.
  
@@ -157,7 +157,7 @@ And this print
 		)	
 	
 
-##### 3. DROP TABLE Syntax
+###### DROP TABLE Syntax
 
  Delete a table.
  
@@ -176,7 +176,7 @@ And this print
 		)
 	
 
-##### 4. ALTER TABLE Syntax
+###### ALTER TABLE Syntax
 
  Changes a table structure.
  
@@ -202,7 +202,7 @@ And this print
 		)
 	
 
-##### 5. TRUNCATE Syntax
+###### TRUNCATE Syntax
 
  Truncate a table.
 
@@ -221,7 +221,7 @@ And this print
 		)
 	
 
-##### 6. SELECT Syntax
+###### SELECT Syntax
 
  Select the contents of a table. 
 	
@@ -251,7 +251,7 @@ And this print
 		)		
 	
 
-##### 7. COUNT Syntax
+###### COUNT Syntax
 
  Return a count matches a query.
  
@@ -270,7 +270,7 @@ And this print
 		)
 	
 
-##### 8. WHERE Syntax
+###### WHERE Syntax
 
  Used to filter records. 
 	
@@ -305,7 +305,7 @@ And this print
 		)
 		
 
-##### 9. LIKE Syntax
+###### LIKE Syntax
 
  Used to filter records using a pattern. 
 	
@@ -336,7 +336,7 @@ And this print
 		)
 
 
-##### 10. INSERT INTO Syntax
+###### INSERT INTO Syntax
 
  Insert new records in a table.
  
@@ -368,7 +368,7 @@ And this print
 		)	
 	
 
-##### 11. UPDATE Syntax
+###### UPDATE Syntax
 
  Update records in a table.
  
@@ -388,7 +388,7 @@ And this print
 		)
 	
 
-##### 12. DELETE Syntax
+###### DELETE Syntax
 
  Delete records in a table.
  
@@ -407,4 +407,4 @@ And this print
 		)
 	
 
->© 2015 SQLui. All rights reserved.
+© 2015 SQLui. All rights reserved.
