@@ -118,7 +118,7 @@ And this print
  All posted values should be treated as strings between single or double quotes.
 
 
-##### SHOW TABLES Syntax
+##### 1. SHOW TABLES Syntax
 
  Displays database tables.
  
@@ -138,7 +138,7 @@ And this print
 		)
 
 
-##### CREATE TABLE Syntax
+##### 2. CREATE TABLE Syntax
 
  Creates a new table.
  
@@ -157,7 +157,7 @@ And this print
 		)	
 	
 
-##### DROP TABLE Syntax
+##### 3. DROP TABLE Syntax
 
  Delete a table.
  
@@ -176,7 +176,7 @@ And this print
 		)
 	
 
-##### ALTER TABLE Syntax
+##### 4. ALTER TABLE Syntax
 
  Changes a table structure.
  
@@ -202,7 +202,7 @@ And this print
 		)
 	
 
-##### TRUNCATE Syntax
+##### 5. TRUNCATE Syntax
 
  Truncate a table.
 
@@ -221,7 +221,7 @@ And this print
 		)
 	
 
-##### SELECT Syntax
+##### 6. SELECT Syntax
 
  Select the contents of a table. 
 	
@@ -251,7 +251,7 @@ And this print
 		)		
 	
 
-##### COUNT Syntax
+##### 7. COUNT Syntax
 
  Return a count matches a query.
  
@@ -270,7 +270,7 @@ And this print
 		)
 	
 
-##### WHERE Syntax
+##### 8. WHERE Syntax
 
  Used to filter records. 
 	
@@ -305,7 +305,7 @@ And this print
 		)
 		
 
-##### LIKE Syntax
+##### 9. LIKE Syntax
 
  Used to filter records using a pattern. 
 	
@@ -336,7 +336,7 @@ And this print
 		)
 
 
-##### INSERT INTO Syntax
+##### 10. INSERT INTO Syntax
 
  Insert new records in a table.
  
@@ -368,7 +368,7 @@ And this print
 		)	
 	
 
-##### UPDATE Syntax
+##### 11. UPDATE Syntax
 
  Update records in a table.
  
@@ -388,7 +388,7 @@ And this print
 		)
 	
 
-##### DELETE Syntax
+##### 12. DELETE Syntax
 
  Delete records in a table.
  
