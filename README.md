@@ -118,6 +118,7 @@ And this print
  All posted values should be treated as strings between single or double quotes.
 
 
+
 ###### SHOW TABLES Syntax
 
  Displays database tables.
@@ -136,6 +137,7 @@ And this print
 				[1] => users
 			)
 		)
+
 
 
 ###### CREATE TABLE Syntax
@@ -157,6 +159,7 @@ And this print
 		)	
 	
 
+
 ###### DROP TABLE Syntax
 
  Delete a table.
@@ -175,6 +178,7 @@ And this print
 			)
 		)
 	
+
 
 ###### ALTER TABLE Syntax
 
@@ -202,6 +206,7 @@ And this print
 		)
 	
 
+
 ###### TRUNCATE Syntax
 
  Truncate a table.
@@ -220,6 +225,7 @@ And this print
 			)
 		)
 	
+
 
 ###### SELECT Syntax
 
@@ -251,6 +257,7 @@ And this print
 		)		
 	
 
+
 ###### COUNT Syntax
 
  Return a count matches a query.
@@ -269,6 +276,7 @@ And this print
 			)
 		)
 	
+
 
 ###### WHERE Syntax
 
@@ -305,6 +313,7 @@ And this print
 		)
 		
 
+
 ###### LIKE Syntax
 
  Used to filter records using a pattern. 
@@ -334,6 +343,7 @@ And this print
 				[col] => next
 			)
 		)
+
 
 
 ###### INSERT INTO Syntax
@@ -368,6 +378,7 @@ And this print
 		)	
 	
 
+
 ###### UPDATE Syntax
 
  Update records in a table.
@@ -388,6 +399,7 @@ And this print
 		)
 	
 
+
 ###### DELETE Syntax
 
  Delete records in a table.
@@ -406,5 +418,7 @@ And this print
 			)
 		)
 	
+
+
 
 © 2015 SQLui. All rights reserved.
