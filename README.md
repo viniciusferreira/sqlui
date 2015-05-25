@@ -42,14 +42,19 @@ All SQL statements must be written in capital letters.
 			)
 	
 The class yet can return arrays with 'notice' or 'error' in the case of failures.
+
+
 	Query: CREATE TABLE users			
 	Return: Array(
 			[error] => Array(
 				[0] => Table users already exists
 			)
-		)						
+		)
+		
 	
-or 	Query: CREATE TABLE test		
+or
+
+	Query: CREATE TABLE test		
 	Return: Array(
 			[notice] => Array(
 				[0] => Command Successfully
@@ -67,42 +72,46 @@ By placing the files on the server and run the first access, you will automatica
 
  If you want to change or enter a new user the password, field password must be encrypted as follows below:
 
-			$your_passrowd = SHA1(MD5('Your Password'));
+	$your_passrowd = SHA1(MD5('Your Password'));
 			
 After initial setup you can use the system via the web interface, posting commands directly into the bar, or load the class in your PHP script.
 
  To load the class add this command below.
+ 
 	$sqlui=false;
 	if (!$sqlui) $sqlui = new SQLui();
 	$sqlui->Connect('your_user','your_password');
-	$sqlui->Database('your_database');<
+	$sqlui->Database('your_database');
 	
 Default user and password are respectively 'root' and 'pass'.
  All user validations will be made in databases/sqlui/users.json, so, to add or remove access to the system, manipulate this table.
 
-Example:
-	$command=$sqlui->Command("UPDATE users SET password='".SHA1(MD5('Your new password'))."' WHERE id='0'");
+	Example: $command=$sqlui->Command("UPDATE users SET password='".SHA1(MD5('Your new password'))."' WHERE id='0'");
 	
-Return: 	$comand=Array(
-		[notice] => Array(
-			[0] => Command Successfully
-		)						
-	)
 	
-And to read the records: 	foreach($command as $value){
-			echo $value[col_name];
-		}
+	Return:	$comand=Array(
+			[notice] => Array(
+				[0] => Command Successfully
+			)						
+		)
 	
-And this print 	Command Successfully
+And to read the records:
+
+	foreach($command as $value){
+		echo $value[col_name];
+	}
+	
+And this print
+
+	Command Successfully
 	
 
 
 DEFINITIONS, STATEMENTS AND SYNTAX
 
-
 Commands in brackets are optional.
- The items inside braces are required.
- All posted values should be treated as strings between single or double quotes.
+The items inside braces are required.
+All posted values should be treated as strings between single or double quotes.
 
 
 
