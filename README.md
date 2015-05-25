@@ -371,11 +371,15 @@ DELETE Syntax
  Delete records in a table.
  
 	DELETE {col_name|*} FROM {tbl_name} [WHERE where_condition]
-	
+
+
 	Query:
-		DELETE col FROM tbl WHERE col='test'
 	
+		DELETE col FROM tbl WHERE col='test'
+
+
 	Return:
+	
 		Array(
 			[notice] => Array (
 				[0] => Command Successfully
