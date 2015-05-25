@@ -1,4 +1,4 @@
-SQLui 1.0
+# SQLui 1.0
 
 SQL user interface for JSON
 
@@ -7,7 +7,7 @@ SQL user interface for JSON
 	Feel free to use these scripts how to give in the tile!!!
 
 
-FOREWORD
+#### FOREWORD
 
  The SQLui was created to facilitate the work of developers working with JSON files.
  The sqlui.class.php class can be used in any script in PHP to faciliar creating and manipulating JSON data files.
@@ -16,7 +16,7 @@ FOREWORD
  One minimal of knowledge about PHP, SQL and JSON is expected to interpret this manual. 
 
 
-GETTING STARTED
+#### GETTING STARTED
 
  All SQL statements must be written in capital letters.
  All references to fields and tables must be carried out with lower case letters.
@@ -67,7 +67,7 @@ or
 		)
 
 
-HOW TO DO?
+#### HOW TO DO?
 
  By placing the files on the server and run the first access, you will automatically create a directory "database" with JSON files "users.json" and "levels.json".
 
@@ -111,14 +111,14 @@ And this print
 	Command Successfully
 
 
-DEFINITIONS, STATEMENTS AND SYNTAX
+#### DEFINITIONS, STATEMENTS AND SYNTAX
 
  Commands in brackets are optional.
  The items inside braces are required.
  All posted values should be treated as strings between single or double quotes.
 
 
-SHOW TABLES Syntax
+##### SHOW TABLES Syntax
 
  Displays database tables.
  
@@ -138,7 +138,7 @@ SHOW TABLES Syntax
 		)
 
 
-CREATE TABLE Syntax
+##### CREATE TABLE Syntax
 
  Creates a new table.
  
@@ -157,7 +157,7 @@ CREATE TABLE Syntax
 		)	
 	
 
-DROP TABLE Syntax
+##### DROP TABLE Syntax
 
  Delete a table.
  
@@ -176,7 +176,7 @@ DROP TABLE Syntax
 		)
 	
 
-ALTER TABLE Syntax
+##### ALTER TABLE Syntax
 
  Changes a table structure.
  
@@ -202,7 +202,7 @@ ALTER TABLE Syntax
 		)
 	
 
-TRUNCATE Syntax
+##### TRUNCATE Syntax
 
  Truncate a table.
 
@@ -221,7 +221,7 @@ TRUNCATE Syntax
 		)
 	
 
-SELECT Syntax
+##### SELECT Syntax
 
  Select the contents of a table. 
 	
@@ -251,7 +251,7 @@ SELECT Syntax
 		)		
 	
 
-COUNT Syntax
+##### COUNT Syntax
 
  Return a count matches a query.
  
@@ -270,7 +270,7 @@ COUNT Syntax
 		)
 	
 
-WHERE Syntax
+##### WHERE Syntax
 
  Used to filter records. 
 	
@@ -305,7 +305,7 @@ WHERE Syntax
 		)
 		
 
-LIKE Syntax
+##### LIKE Syntax
 
  Used to filter records using a pattern. 
 	
@@ -336,7 +336,7 @@ LIKE Syntax
 		)
 
 
-INSERT INTO Syntax
+##### INSERT INTO Syntax
 
  Insert new records in a table.
  
@@ -368,7 +368,7 @@ INSERT INTO Syntax
 		)	
 	
 
-UPDATE Syntax
+##### UPDATE Syntax
 
  Update records in a table.
  
@@ -388,7 +388,7 @@ UPDATE Syntax
 		)
 	
 
-DELETE Syntax
+##### DELETE Syntax
 
  Delete records in a table.
  
@@ -407,4 +407,4 @@ DELETE Syntax
 		)
 	
 
-© 2015 SQLui. All rights reserved.
+>© 2015 SQLui. All rights reserved.
