@@ -126,6 +126,7 @@ SHOW TABLES Syntax
 	
 	Query:
 		SHOW TABLES
+
 	Return:
 		Array(
 			[0] => Array(
