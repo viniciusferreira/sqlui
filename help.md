@@ -105,35 +105,54 @@ After initial setup you can use the system via the web interface, posting comman
 
 To load the class add this command below.
  
+```php
 	$sqlui=false;
 	if (!$sqlui) $sqlui = new SQLui();
 	$sqlui->Connect('your_user','your_password');
 	$sqlui->Database('your_database');
-	
- Default user and password are respectively 'root' and 'pass'.
- All user validations will be made in databases/sqlui/users.json, so, to add or remove access to the system, manipulate this table.
+```
 
-	Example:
-		$command=$sqlui->Command("UPDATE users SET password='".SHA1(MD5('Your new password'))."' WHERE id='0'");
+The Database method is optional , you can use TAKE command to select or change a database used.
+
+```php
+	$sqlui=false;
+	if (!$sqlui) $sqlui = new SQLui();
+	$sqlui->Connect('your_user','your_password');
+	$sqlui->Command('TAKE database_name');
+```
+
+Default user and password are respectively 'root' and 'pass'.
+All user validations will be made in databases/sqlui/users.json, so, to add or remove access to the system, manipulate this table.
+
+>Example:
+
+```php
+	$command=$sqlui->Command("UPDATE users SET password='".SHA1(MD5('Your new password'))."' WHERE id='0'");
+```		
 		
-		
-	Return:
-		$comand=Array(
-			[notice] => Array(
-				[0] => Command Successfully
-			)
+>Return:
+
+```php
+	$command=Array(
+		[notice] => Array(
+			[0] => Command Successfully
 		)
+	)
+```
 
-And to read the records:
+>And to read the records:
 
+```php
 	foreach($command as $value){
 		echo $value[col_name];
 	}
+```
 
-And this print
+>And this print
 
+```php
 	Command Successfully
-
+```
 
 #### 4. DEFINITIONS, STATEMENTS AND SYNTAX
 
