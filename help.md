@@ -158,8 +158,13 @@ And this print
  The items inside braces are required.
  All posted values should be treated as strings between single or double quotes.
 
-
 >###### 4.1. SHOW Syntax
+
+Display informations about databases or tables.
+
+```sql
+	SHOW [DATABASES|TABLES|TABLE {tbl_name}]
+```
 
 Display databases.
 
@@ -207,12 +212,13 @@ Displays tables fields.
 
 >###### 4.2. CREATE Syntax
 
-Create Database.
+Use this function to create tables or databases.
 
 ```sql
-	CREATE DATABASE {database_name}
+	CREATE {DATABASE {db_name}|TABLE {tbl_name({col[,col...]})}
 ```
-Example:
+
+Create Database.
 ```sql
 	CREATE DATABASE test
 ```
@@ -225,13 +231,8 @@ Example:
 ```
 
 Creates a new table.
-
-```sql 
-	CREATE {tbl_name({col[,col...]})
-```	
-Example:
 ```sql
-	CREATE TABLE test
+	CREATE TABLE test(id,name)
 ```
 ```php
 	Array(
@@ -241,55 +242,72 @@ Example:
 	)	
 ```	
 
+>###### 4.3. DROP Syntax
 
-###### DROP TABLE Syntax
+You can delete your databases and tables.
 
- Delete a table.
- 
-	DROP TABLE {tbl_name}
+```sql 
+	DROP [DATABASE {db_name}|TABLE {tbl_name}]
+```
 
- Example
- 
-	Query:
-		DROP TABLE test
-	
-	Return: 
-		Array(
-			[notice] => Array(
-				[0] => Command Successfully
-			)
+Delete database.
+```sql
+	DROP DATABASE test
+```	
+```php
+	Array(
+		[notice] => Array(
+			[0] => Command Successfully
 		)
-	
+	)
+```
 
+Delete a table.
+```sql
+	DROP TABLE test
+```	
+```php
+	Array(
+		[notice] => Array(
+			[0] => Command Successfully
+		)
+	)
+```	
 
-###### ALTER TABLE Syntax
+###### 4.4. ALTER TABLE Syntax
 
- Changes a table structure.
- 
+Changes a table structure.
+
+```sql 
 	ALTER TABLE {tbl_name}
 		{ADD|DROP col_name[col_name...]}|{CHANGE col_name new_name[,col_name new_name...]}
+```
 
- Example
+Example:
  
-	Query:
-		ALTER TABLE test ADD field
-			
-	Query:
-		ALTER TABLE test DROP field
-			
-	Query: 
-		ALTER TABLE test CHANGE field_1 new_name_1,field_2 new_name_2
-	
-	Return: 
-		Array(
-			[notice] => Array(
-				[0] => Command Successfully
-			)
+```sql
+	ALTER TABLE test ADD field
+```			
+or
+```sql
+	ALTER TABLE test DROP field
+```
+or
+```sql
+	ALTER TABLE test CHANGE field_1 new_name_1,field_2 new_name_2
+```
+
+Return:
+```php
+	Array(
+		[notice] => Array(
+			[0] => Command Successfully
 		)
-	
+	)
+```	
 
 
-###### TRUNCATE Syntax
+###### 4.5. TRUNCATE Syntax
 
  Truncate a table.
 
