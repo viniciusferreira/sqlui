@@ -205,24 +205,41 @@ Displays tables fields.
 	)
 ```
 
-###### 4.2. CREATE TABLE Syntax
+>###### 4.2. CREATE Syntax
 
- Creates a new table.
- 
+Create Database.
+
+```sql
+	CREATE DATABASE {database_name}
+```
+Example:
+```sql
+	CREATE DATABASE test
+```
+```php
+	Array(
+		[notice] => Array(
+			[0] => Command Successfully
+		)
+	)
+```
+
+Creates a new table.
+
+```sql 
 	CREATE {tbl_name({col[,col...]})
-	
- Example
-
-	Query:
-		CREATE TABLE test
-			
-	Return: 
-		Array(
-			[notice] => Array(
-				[0] => Command Successfully
-			)
-		)	
-	
+```	
+Example:
+```sql
+	CREATE TABLE test
+```
+```php
+	Array(
+		[notice] => Array(
+			[0] => Command Successfully
+		)
+	)	
+```	
 
 
 ###### DROP TABLE Syntax
