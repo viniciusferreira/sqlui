@@ -163,11 +163,10 @@ And this print
 Display informations about databases or tables.
 
 ```php
-	SHOW [DATABASES|TABLES|TABLE {tbl_name}]
+	SHOW {DATABASES|TABLES|TABLE {tbl_name}}
 ```
 
-Display databases.
-
+4.1.1. Display databases.
 ```sql
 	SHOW DATABASES
 ```
@@ -180,8 +179,18 @@ Display databases.
 	)
 ```
 
-Displays database tables.
- 
+4.1.2. Displays selected database.
+```sql
+	SHOW DATABASE
+```
+```php
+	Array(
+		[0] => Array(
+			[0] => database_name
+	)
+```
+
+4.1.3. Displays database tables.
 ```sql
 	SHOW TABLES
 ```
@@ -195,8 +204,7 @@ Displays database tables.
 	)
 ```
 
-Displays tables fields.
- 
+4.1.4. Displays tables fields.
 ```sql
 	SHOW TABLE table_name
 ```
@@ -218,7 +226,7 @@ Use this function to create tables or databases.
 	CREATE {DATABASE {db_name}|TABLE {tbl_name({col[,col...]})}
 ```
 
-Create Database.
+4.2.1. Create Database.
 ```sql
 	CREATE DATABASE test
 ```
@@ -230,7 +238,7 @@ Create Database.
 	)
 ```
 
-Creates a new table.
+4.2.2. Creates a new table.
 ```sql
 	CREATE TABLE test(id,name)
 ```
@@ -250,7 +258,7 @@ You can delete your databases and tables.
 	DROP [DATABASE {db_name}|TABLE {tbl_name}]
 ```
 
-Delete database.
+4.3.1. Delete database.
 ```sql
 	DROP DATABASE test
 ```	
@@ -262,7 +270,7 @@ Delete database.
 	)
 ```
 
-Delete a table.
+4.3.2. Delete a table.
 ```sql
 	DROP TABLE test
 ```	
@@ -277,8 +285,21 @@ Delete a table.
 > ###### 4.4. TAKE syntax
 
 Select or change a database.
+
 ```php
 	TAKE db_name
+```
+
+Example:
+```sql
+	TAKE database
+```
+```php
+	Array(
+		[notice] => Array(
+			[0] => Command Successfully
+		)
+	)
 ```
 
 > ###### 4.5. ALTER TABLE Syntax
@@ -290,21 +311,22 @@ Changes a table structure.
 		{ADD|DROP col_name[col_name...]}|{CHANGE col_name new_name[,col_name new_name...]}
 ```
 
-Example:
- 
+4.5.1. Add a field
 ```sql
 	ALTER TABLE test ADD field
 ```			
-or
+
+4.5.2. Delete a field
 ```sql
 	ALTER TABLE test DROP field
 ```
-or
+
+4.5.3. Change name of a field
 ```sql
 	ALTER TABLE test CHANGE field_1 new_name_1,field_2 new_name_2
 ```
 
-Return:
+All Return:
 ```php
 	Array(
 		[notice] => Array(
@@ -317,10 +339,12 @@ Return:
 > ###### 4.6. TRUNCATE Syntax
 
 Truncate a table.
+
 ```php
 	TRUNCATE {tbl_name}
 ```
-Example
+
+Example:
 ```sql
 	TRUNCATE test
 ```
@@ -332,10 +356,10 @@ Example
 	)
 ```	
 
-
 > ###### 4.7. SELECT Syntax
 
- Select the contents of a table. 
+Select the contents of a table.
+ 
 ```php	
 	SELECT [DISTINCT] [COUNT] {tbl_name.col_name|col_name|*}
 		FROM {tbl_name} [[LEFT]JOIN {join_tbl_name} ON {where_condition}]
@@ -345,8 +369,7 @@ Example
 				[INTO 'file_name']
 ```				
 
-Example
-
+Example:
 ```sql
 	SELECT tbl1.col,tbl2.col FROM tbl1 JOIN tbl2 ON tbl2.col=tbl1.col LIMIT 2
 ```
@@ -366,11 +389,12 @@ Example
 > ###### 4.8. COUNT Syntax
 
 Return a count matches a query.
+
 ```php 
 	COUNT(col_name[,col_name...]|*)
 ```
 
-Example
+Example:
 ```sql
 		SELECT COUNT(*) FROM tbl1
 ```
@@ -380,29 +404,31 @@ Example
 			[count] => 1
 		)
 	)
-```	
+```
+
 > ###### 4.9. WHERE Syntax
 
- Used to filter records. 
+Used to filter records. 
+ 
 ```php	
 	WHERE {tbl_name.col_name|col_name}{operator}{'string'}
 		[{AND|OR} {tbl_name.col_name|col_name}{operator}{'string'}...]
 ```	
 
- Where operators are.
+Where operators are.
  
-  Operator  | Result
-	--------- | -----------------------
-	=         |	equal
-	<>    	  |	not equal
-	!=	      |	not equal
-	>	        |	greater than
-	<	        |	less than	
-	>=        |	greater than or equal
-	<=	      |	less than or equal
-	LIKE      |	search for a pattern	
+Operator  | Result
+--------- | -----------------------
+=         |	equal
+<>    	  |	not equal
+!=	  |	not equal
+>	  |	greater than
+<	  |	less than	
+>=        |	greater than or equal
+<=	  |	less than or equal
+LIKE      |	search for a pattern	
 
- Example
+Example
 ```sql
 	SELECT col FROM tbl WHERE col='needle'
 ```
@@ -417,113 +443,114 @@ Example
 	)
 ```		
 
-> ###### LIKE Syntax
+> ###### 4.10 LIKE Syntax
 
- Used to filter records using a pattern. 
-	
+Used to filter records using a pattern. 
+
+```php	
 	[NOT] LIKE {'[operator]string[operator]'}		
+```
 
- Where, operators are a signal %, and can be used this way. 
+Where, operators are a signal %, and can be used this way. 
  
-  Operator  | Find word
-  ----------|---------------
-	'string%'	|	starting with
-	'%string'	|	ends
-	'%string%'|	contains
+Operator   | Find word
+-----------|---------------
+'string%'  | starting with
+'%string'  | ends
+'%string%' | contains
 
- Example
-
-	Query:
+Example:
+```sql
 	 SELECT col FROM tbl WHERE col LIKE 'ne%'
-	
-	Return:
-		Array(
-			[0] => Array (
-				[col] => needle
-			)
-			[1] => Array (
-				[col] => never
-			)
-			[1] => Array (
-				[col] => next
-			)
+```	
+```php
+	Array(
+		[0] => Array (
+			[col] => needle
 		)
+		[1] => Array (
+			[col] => never
+		)
+		[1] => Array (
+			[col] => next
+		)
+	)
+```
 
+> ###### 4.11. INSERT INTO Syntax
 
+Insert new records in a table.
 
-###### INSERT INTO Syntax
-
- Insert new records in a table.
- 
+```php 
 	INSERT INTO {tbl_name[(col_name,...)]}
 		VALUES{('string'[,'string'...])}[,('string'[,'string'...])]
+```
 
- Example
+Example:
+```sql
+	INSERT INTO tbl(id,name) VALUES('0','name 0')
+```
+```php
+	Array(
+		[notice] => Array (
+			[0] => Command Successfully
+		)
+	)	
+```
 
-	Query:
-		INSERT INTO tbl(id,name) VALUES('0','name 0')
-	
-	Return:
-		Array(
-			[notice] => Array (
-				[0] => Command Successfully
-			)
-		)	
-
- When you insert more than one record, use this syntax to make the process faster.
+When you insert more than one record, use this syntax to make the process faster.
  
-	Query:
-		INSERT INTO tbl VALUES('0','name 0'),('1','name 1'),('2','name 2')
+```sql
+	INSERT INTO tbl VALUES('0','name 0'),('1','name 1'),('2','name 2')
+```
+```php
+	Array(
+		[notice] => Array (
+			[0] => Command Successfully
+		)
+	)	
 	
-	Return: 
-		Array(
-			[notice] => Array (
-				[0] => Command Successfully
-			)
-		)	
-	
+```
 
+> ###### 4.12. UPDATE Syntax
 
-###### UPDATE Syntax
+Update records in a table.
 
- Update records in a table.
- 
+```php
 	UPDATE {tbl_name} SET col_name1={'string'}[,col_name2={'string'}...]
 		[WHERE {where_condition}]
+```
 
- Example
-
-	Query: 
-		UPDATE tbl SET col1='string',col2="string" WHERE col1='test'
-	
-	Return:
-		Array(
-			[notice] => Array (
-				[0] => Command Successfully
-			)
+Example:
+```sql
+	UPDATE tbl SET col1='string',col2="string" WHERE col1='test'
+```
+```php
+	Array(
+		[notice] => Array (
+			[0] => Command Successfully
 		)
-	
+	)
+```	
 
+> ###### 4.13. DELETE Syntax
 
-###### DELETE Syntax
+Delete records in a table.
 
- Delete records in a table.
- 
+```php 
 	DELETE {col_name|*} FROM {tbl_name} [WHERE where_condition]
+```
 
- Example
-
-	Query:
-		DELETE col FROM tbl WHERE col='test'
-
-	Return:
-		Array(
-			[notice] => Array (
-				[0] => Command Successfully
-			)
+Example:
+```sql
+	DELETE col FROM tbl WHERE col='test'
+```
+```php
+	Array(
+		[notice] => Array (
+			[0] => Command Successfully
 		)
-	
+	)
+```	
 
-
-
-⌐ 2015 SQLui. All rights reserved.
+&copy; 2015 SQLui. All rights reserved.
