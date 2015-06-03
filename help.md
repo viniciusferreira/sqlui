@@ -92,7 +92,7 @@ You must configure the permissions of access to server files to maintain content
 If you want to change or enter a new user the password, field password must be encrypted as follows below:
 
 ```sql
-  UPDATE users SET password=PASSWROD('your password')
+  UPDATE users SET password=PASSWROD('your password') WHERE id='0'
 ```
 
 or
@@ -127,7 +127,7 @@ All user validations will be made in databases/sqlui/users.json, so, to add or r
 >Example:
 
 ```php
-	$command=$sqlui->Command("UPDATE users SET password='".SHA1(MD5('Your new password'))."' WHERE id='0'");
+	$command=$sqlui->Command("UPDATE users SET password=PASSWROD('Your new password') WHERE id='0'");
 ```		
 		
 >Return:
@@ -140,7 +140,7 @@ All user validations will be made in databases/sqlui/users.json, so, to add or r
 	)
 ```
 
->And to read the records:
+And to read the records:
 
 ```php
 	foreach($command as $value){
@@ -148,7 +148,7 @@ All user validations will be made in databases/sqlui/users.json, so, to add or r
 	}
 ```
 
->And this print
+And this print
 
 ```php
 	Command Successfully
