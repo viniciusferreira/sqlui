@@ -158,7 +158,7 @@ And this print
  The items inside braces are required.
  All posted values should be treated as strings between single or double quotes.
 
-> ###### 4.1. SHOW Syntax
+> ##### 4.1. SHOW Syntax
 
 Display informations about databases or tables.
 
@@ -166,7 +166,7 @@ Display informations about databases or tables.
 	SHOW {DATABASES|TABLES|TABLE {tbl_name}}
 ```
 
-4.1.1. Display databases.
+###### 4.1.1. Display databases.
 ```sql
 	SHOW DATABASES
 ```
@@ -179,7 +179,7 @@ Display informations about databases or tables.
 	)
 ```
 
-4.1.2. Displays selected database.
+###### 4.1.2. Displays selected database.
 ```sql
 	SHOW DATABASE
 ```
@@ -190,7 +190,7 @@ Display informations about databases or tables.
 	)
 ```
 
-4.1.3. Displays database tables.
+###### 4.1.3. Displays database tables.
 ```sql
 	SHOW TABLES
 ```
