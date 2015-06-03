@@ -6,42 +6,34 @@ class SQLui {
 	public $database='';
 	public $connected=false;
 	public $error='';
+	public $success=array('notice'=>array('Command Successfully'));
 	
-	function SQLui(){
+	public function SQLui(){
 		if(!is_dir('database')) mkdir('database',0644);
 		if(!is_dir('database/sqlui')) mkdir('database/sqlui',0644);
 		if(!is_file('database/sqlui/users.json')) {
 			$this->database='sqlui';
-			$this->File('users',json_decode('[{"id":"0","level":"0","username":"root","password":"9d4e1e23bd5b727046a9e3b4b7db57bd8d6ee684"}]'));
+			$this->File('users',json_decode('[{"id":"0","level":"0","username":"root","password":"8c772c65c6e2f5a92cf18fb01688cd7b"}]'));
 			$this->File('levels',json_decode('[{"id":"0","level":"System"}]'));
 			$this->database='';
 		}
 	}
-	function Open($table){
-		if(is_file("database/$this->database/$table.json")){
-			return json_decode(file_get_contents("database/$this->database/$table.json"),true);
-		} else {
-			$this->error="Table <I>$table</I> not found";
-			return '';
-		}
-	}
-	function Connect($user,$pass){
+	public function Connect($user,$pass){
 		$this->database='sqlui';
 		$users=$this->Open('users');
 		foreach($users as $check){
-			if ($check['username']==$user&&$check['password']==sha1($pass)){
+			if ($check['username']==$user&&$check['password']==$this->PasswordKey($pass)){			
 				$this->connected=true;
 				break;
 			}
 		}
 		if(!$this->connected) $this->error="Invalid login";
-		$this->database='';
+		$this->database=isset($_COOKIE['sqlui_take_database'])?$_COOKIE['sqlui_take_database']:'';
 	}
-	function Database($database){
-		$this->database=$database;
-	}
-	function Command($commands){
-		if(empty($this->database)||!is_dir("database/".$this->database))$this->return=$this->Error('Invalid database');
+	public function Command($commands){
+		if(!strstr($commands,'TAKE ')){
+			if($commands!='SHOW DATABASES'&&empty($this->database)||!is_dir("database/".$this->database)) return $this->Error('No database selected');
+		}
 		while(empty($this->return)){
 			if(!empty($this->error))$this->return=$this->Error();
 			if(empty($commands)){
@@ -51,12 +43,39 @@ class SQLui {
 				$this->return=method_exists($this,$command[0])?$this->$command[0]($commands):$this->Error('Invalid command');
 			}
 		}
+		if(!empty($this->error))return $this->Error();
 		return $this->return;
 	}
-	function Error($erro=''){
+	public function Database($database){
+		$this->database=$database;
+	}
+	private function Functions($commands){	
+		$command=explode(' ',$commands);
+		if(!isset($command[1]))return $this->Error("Bad sintax");
+		$function="$command[0]$command[1]";
+		if(!method_exists($this,$function))return $this->Error("Command <i>$command[1]</i> not implemented");
+		return $this->$function($commands);	
+	}
+	private function Take($commands){
+		$arg=explode(' ',$commands);
+		if(empty($arg[1]))return $this->Error("Empty database");
+		if(!is_dir("database/$arg[1]"))return $this->Error("Database <I>$arg[1]</I> not exists");
+		setcookie("sqlui_take_database", $arg[1]);
+		$this->Database($arg[1]);
+		return $this->success;		
+	}
+	private function Open($table){
+		if(is_file("database/$this->database/$table.json")){
+			return json_decode(file_get_contents("database/$this->database/$table.json"),true);
+		} else {
+			$this->error="Table <I>$table</I> not found";
+			return '';
+		}
+	}
+	private function Error($erro=''){
 		return array('error'=>array((!empty($erro)?$erro:$this->error)));
 	}
-	function Args($commands,$command,$limits){
+	private function Args($commands,$command,$limits){
 		$first=strpos($commands,$command)+strlen($command)+1;
 		$end=strlen($commands);
 		$array=explode(',',$limits);
@@ -66,20 +85,30 @@ class SQLui {
 		}
 		return trim(substr($commands,$first,$end-$first));
 	}
-	function Show($commands){
-		$command=explode(' ',$commands);
-		if(!isset($command[1]))return $this->Error("Bad sintax");
-		$function="Show$command[1]";
-		if(!method_exists($this,$function))return $this->Error("Command <i>$command[1]</i> not implemented");
-		return $this->$function($commands);	
+	private function Show($commands){
+		return $this->Functions($commands);	
 	}
-	function ShowTables(){
+	private function showTable($commands){
+		$tableName=trim($this->Args($commands,'TABLE','NULL'));
+		$table=$this->Open($tableName);
+		return array($this->Fields($table));
+	}
+	private function ShowTables(){
 		$show=array();
 		$handle=opendir("database/".$this->database);
 		while(false!==($file=readdir($handle)))$file!='.'&&$file!='..'&&strstr($file,'.json')?$show[]=str_replace('.json','',$file):'';
 		return array($show);
 	}
-	function Select($commands){
+	private function ShowDatabase(){
+		return array(array($this->database));
+	}
+	private function ShowDatabases(){
+		$show=array();
+		$handle=opendir("database/");
+		while(false!==($file=readdir($handle)))$file!='.'&&$file!='..'&&is_dir("database/$file")?$show[]=$file:'';
+		return array($show);
+	}
+	private function Select($commands){
 		$tableName=str_replace(' LEFT','',$this->Args($commands,'FROM','JOIN,WHERE,ORDER,LIMIT,INTO'));
 		$table=$this->Open($tableName);
 		if(empty($table))return $this->Error();
@@ -103,26 +132,31 @@ class SQLui {
 		if(strstr($commands,'INTO'))$this->File($this->Args($commands,'INTO','NULL'),$this->FieldName($table));
 		return $table;
 	}
-	function Table($tableName,$table){
+	private function Table($tableName,$table){
 		$fields=$this->Fields($table);
 		foreach($fields as $key => $value)$fields[$key]="$tableName.$value";
 		foreach($table as $index => $registers)$table[$index]=array_combine($fields,$registers);
 		return $table;
 	}
-	function Requireds($fields,$commands,$tableName){
+	private function Requireds($fields,$commands,$tableName){
 		$requireds=str_replace('DISTINCT ','',$this->Args($commands,'SELECT','FROM'));
-		if(substr($requireds,-1)==')')$requireds=str_replace('COUNT(','',substr($requireds,0,-1));
+		if(substr($requireds,-1)==')'&&strstr($requireds,'COUNT('))$requireds=str_replace('COUNT(','',substr($requireds,0,-1));
 		if($requireds=='*')$requireds=join(',',$fields);
 		$requireds=explode(',',$requireds);
 		$temp='';
 		foreach($requireds as $required){
+			$password=0;
+			if(strstr($required,'PASSWORD(')){
+				$required=substr($required,9,-1);
+				$password=1;
+			}
 			if(!strstr($required,'.'))$required=$tableName.'.'.$required;
-			$temp.='"'.$required.'" => $registers["'.$required.'"],';
+			$temp.='"'.$required.'" => '.($password?'$this->PasswordKey(':"").'$registers["'.$required.'"]'.($password?")":"").',';
 			if(!in_array($required,$fields))$this->error="Field <I>$required</I> not found";
 		}
 		return 'array('.substr($temp,0,-1).')';
 	}
-	function Join($table,$commands){
+	private function Join($table,$commands){
 		$first=strpos($commands,' LEFT ')<strpos($commands,' JOIN ')?'LEFT':'JOIN';
 		$args=$first.' '.$this->Args($commands,$first,'WHERE,ORDER,LIMIT');
 		$arg=explode(' ',$args);
@@ -150,7 +184,7 @@ class SQLui {
 		}
 		return $table;
 	}
-	function Joins($table,$join,$on,$left,$null){
+	private function Joins($table,$join,$on,$left,$null){
 		foreach($table as $key => $value){
 			$join_key=array_search($value[$on[0]],array_column($join,$on[1]));
 			if($join_key>-1){
@@ -162,11 +196,11 @@ class SQLui {
 		}
 		return $left=='LEFT'?$table_left:$table;
 	}
-	function Fields($table){
+	private function Fields($table){
 		return array_keys($table[0]);
 	}
-	function Where($commands,$fields,$tableName){
-		$where=$this->Args($commands,'WHERE','ORDER,LIMIT,INTO');
+	private function Where($commands,$fields,$tableName){
+		$where=$this->Password($this->Args($commands,'WHERE','ORDER,LIMIT,INTO'));
 		preg_match_all('/([\S]+?)(<>|!=|=|<=|>=|<|>|\sLIKE\s)([\S\s]+?)(AND|OR|$)/', $where, $matches);
 		$where='';
 		foreach($matches[0] as $key => $value){
@@ -179,7 +213,7 @@ class SQLui {
 		if(strstr($where,'LIKE'))$where=$this->Like($tableName,trim($where));
 		return "return $where;";
 	}
-	function Like($tableName,$where){
+	private function Like($tableName,$where){
 		preg_match_all('/([\S]+)( LIKE | NOT LIKE )([\s\S][^AND|OR]+)/', $where, $matches);
 		foreach($matches[0] as $key => $value){
 			$not=strstr($matches[2][$key],'NOT')?'!':'';
@@ -197,7 +231,7 @@ class SQLui {
 		}
 		return $where;
 	}
-	function OrderBy($table,$commands,$tableName,$fields){
+	private function OrderBy($table,$commands,$tableName,$fields){
 		$orderby=explode(',',str_replace(' ASC','',str_replace(' DESC','',$this->Args($commands,'ORDER BY','LIMIT,INTO'))));
 		foreach($orderby as &$value)if(!strstr($value,'.'))$value="$tableName.$value";
 		$this->Check($orderby,$fields);
@@ -220,21 +254,22 @@ class SQLui {
 		});
 		return $table;
 	}
-	function Limit($table,$commands){
+	private function Limit($table,$commands){
 		$limit=$this->Args($commands,'LIMIT','INTO');
 		$limit=!strstr($limit,',')?"0,$limit":$limit;
 		$limits=explode(',',$limit);
 		$table=array_slice($table,$limits[0],$limits[1]);
 		return $table;
 	}
-	function Distinct($table){
+	private function Distinct($table){
 		$fields=$this->Fields($table);
 		foreach($table as $key => $value)$table[$key]=join('*|:|*',$value);
 		$table=array_unique($table);
 		foreach($table as $key => $value)$table[$key]=array_combine($fields,explode('*|:|*',$value));
 		return $table;
 	}
-	function Insert($commands){
+	private function Insert($commands){
+		$commands=$this->Password($commands);
 		$tableName=explode('(',$this->Args($commands,'INTO','VALUES'));
 		$table=$this->Open($tableName[0]);
 		$fields=array_keys($table[0]);
@@ -251,27 +286,27 @@ class SQLui {
 			$table[]=$content;
 		}
 		$this->File($tableName[0],$table);
-		return array('notice'=>array('Command Successfully'));
+		return $this->success;
 	}
-	function Truncate($commands){
+	private function Truncate($commands){
 		$tableName=$this->Args($commands,'TRUNCATE','NULL');
 		foreach($this->Fields($this->open($tableName)) as $field)$array[$field]='';
 		$this->File($tableName,array('0'=>$array));
-		return array('notice'=>array('Command Successfully'));
+		return $this->success;
 	}
-	function Update($commands){
+	private function Update($commands){
 		$tableName=$this->Args($commands,'UPDATE','SET');
 		$table=$this->Open($tableName);
 		$fields=$this->Fields($table);
-		$set=explode(',',$this->Args($commands,'SET','WHERE'));
+		$set=explode(',',$this->Password($this->Args($commands,'SET','WHERE')));
 		$this->Check(array_map(function($value){return strstr($value,'=',TRUE);},$set),$fields);
 		if(!empty($this->error))return $this->Error();
-		$where=str_replace("$tableName.",'',(strstr($commands,'WHERE')?$this->Where($commands,$fields,$tableName):''));
+		$where=str_replace("$tableName.",'',(strstr($commands,'WHERE')?$this->Where($commands,$fields,$tableName):''));		
 		foreach($table as $key => $registers)if(empty($where)||eval($where))foreach($set as $arg)$table[$key][strstr($arg,'=',TRUE)]=substr(strstr($arg,'='),2,-1);
 		$this->File($tableName,$table);
-		return array('notice'=>array('Command Successfully'));
+		return $this->success;
 	}
-	function Delete($commands){
+	private function Delete($commands){
 		$tableName=$this->Args($commands,'FROM','WHERE');
 		$table=$this->Open($tableName);
 		$fields=$this->Fields($table);
@@ -297,31 +332,54 @@ class SQLui {
 			sort($table);
 			$this->File($tableName,$table);
 		}
-		return array('notice'=>array('Command Successfully'));
+		return $this->success;
 	}
-	function Create($commands){
-		$tableName=$this->Args($commands,'TABLE','(');
-		if(is_file("database/$this->database/$tableName.json")) return $this->Error("Table <i>$tableName</i> already exists");
-		foreach(explode(',',$this->Args($commands,$tableName,')')) as $value)$array[$value]='';
+	private function Create($commands){
+		return $this->Functions($commands);	
+	}
+	private function CreateDatabase($commands){
+		$command=explode(' ',$commands);
+		if(!isset($command[2]))return $this->Error("No database name");
+		if(is_dir("database/$command[2]"))return $this->Error("Database already exists");
+		mkdir("database/$command[2]",0644);
+		return $this->success;
+	}
+	private function CreateTable($commands){
+		$command=explode(' ',$commands);
+		$arg=explode('(',substr($command[2],0,-1));
+		if(!isset($arg[1]))return $this->Error("Bad syntax");
+		$tableName=$arg[0];
+		if(is_file("database/$this->database/$arg[0].json")) return $this->Error("Table <i>$arg[0]</i> already exists");
+		foreach(explode(',',$arg[1]) as $value)$array[$value]='';
 		$this->File($tableName,array($array));
-		return array('notice'=>array('Command Successfully'));		
+		return $this->success;
 	}
-	function Drop($commands){
+	private function Drop($commands){
+		return $this->Functions($commands);	
+	}
+	private function DropTable($commands){
 		$file="database/$this->database/".$this->Args($commands,'TABLE','NULL').".json";
 		if(!is_file($file))return $this->Error('Table not found');
 		unlink($file);
-		return array('notice'=>array('Command Successfully'));
+		return $this->success;
 	}
-	function Check($check,$fields){
+	private function DropDatabase($commands){
+		$command=explode(' ',$commands);
+		if(empty($command[2]))return $this->Error("No database name");
+		if($command[2]=='sqlui'||!is_dir("database/$command[2]"))return $this->Error("Invalid database name");
+		rmdir("database/$command[2]");
+		return $this->success;
+	}
+	private function Check($check,$fields){
 		foreach($check as $field)if(!in_array($field,$fields))$this->error="Field $field not found.";
 	}
-	function Alter($commands){
+	private function Alter($commands){
 		$command=explode(' ',$commands);
 		$function="Alter$command[3]";
 		if(!method_exists($this,$function))return $this->Error("Command <i>$command[3]</i> not implemented");
 		return $this->$function($commands);
 	}	
-	function AlterAdd($commands){
+	private function AlterAdd($commands){
 		$tableName=$this->Args($commands,'TABLE','ADD');
 		$table=$this->Open($tableName);
 		$fields=explode(',',$this->Args($commands,'ADD','NULL'));
@@ -329,9 +387,9 @@ class SQLui {
 		foreach($fields as $field)$array[$field]='';
 		foreach($table as $key => $register)$table[$key]=array_merge($table[$key],$array);
 		$this->File($tableName,$table);
-		return array('notice'=>array('Command Successfully'));
+		return $this->success;
 	}
-	function AlterDrop($commands){
+	private function AlterDrop($commands){
 		$tableName=$this->Args($commands,'TABLE','DROP');
 		$table=$this->Open($tableName);
 		$adds=explode(',',$this->Args($commands,'DROP','NULL'));
@@ -339,9 +397,9 @@ class SQLui {
 		if(!empty($this->error))return $this->Error();
 		foreach($table as $key => $register)foreach($adds as $field)unset($table[$key][$field]);
 		$this->File($tableName,$table);
-		return array('notice'=>array('Command Successfully'));
+		return $this->success;
 	}
-	function AlterChange($commands){
+	private function AlterChange($commands){
 		$tableName=$this->Args($commands,'TABLE','CHANGE');
 		$table=$this->Open($tableName);
 		$fields=explode(',',$this->Args($commands,'CHANGE','NULL'));
@@ -355,9 +413,19 @@ class SQLui {
 			}
 		}
 		$this->File($tableName,$table);
-		return array('notice'=>array('Command Successfully'));
+		return $this->success;
 	}
-	function File($table,$content){
+	private function Password($commands){
+		preg_match_all("/(PASSWORD\\(['|\"](.+?)['|\"][\\)])/", $commands, $matches);
+		foreach($matches[2] as $key => $match)$commands=str_replace($matches[1][$key],"'".$this->PasswordKey($match)."'",$commands);
+		return $commands;
+	}
+	private function PasswordKey($key){
+		$password=sha1($key);
+		for($i=0;$i<strlen($key);$i++)$password=md5($password);
+		return $password;
+	}
+	private function File($table,$content){
 		$handler=fopen("database/$this->database/$table.json",'w+');
 		fwrite($handler,utf8_encode(json_encode($content)));
 		fclose($handler);
