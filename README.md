@@ -1,4 +1,4 @@
-# SQLui 1.0
+# SQLui
 
 SQL user interface for JSON
 
