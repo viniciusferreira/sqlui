@@ -158,11 +158,11 @@ And this print
  The items inside braces are required.
  All posted values should be treated as strings between single or double quotes.
 
->###### 4.1. SHOW Syntax
+> ###### 4.1. SHOW Syntax
 
 Display informations about databases or tables.
 
-```sql
+```php
 	SHOW [DATABASES|TABLES|TABLE {tbl_name}]
 ```
 
@@ -210,11 +210,11 @@ Displays tables fields.
 	)
 ```
 
->###### 4.2. CREATE Syntax
+> ###### 4.2. CREATE Syntax
 
 Use this function to create tables or databases.
 
-```sql
+```php
 	CREATE {DATABASE {db_name}|TABLE {tbl_name({col[,col...]})}
 ```
 
@@ -242,11 +242,11 @@ Creates a new table.
 	)	
 ```	
 
->###### 4.3. DROP Syntax
+> ###### 4.3. DROP Syntax
 
 You can delete your databases and tables.
 
-```sql 
+```php 
 	DROP [DATABASE {db_name}|TABLE {tbl_name}]
 ```
 
@@ -274,11 +274,18 @@ Delete a table.
 	)
 ```	
 
-###### 4.4. ALTER TABLE Syntax
+> ###### 4.4. TAKE syntax
+
+Select or change a database.
+```php
+	TAKE db_name
+```
+
+> ###### 4.5. ALTER TABLE Syntax
 
 Changes a table structure.
 
-```sql 
+```php 
 	ALTER TABLE {tbl_name}
 		{ADD|DROP col_name[col_name...]}|{CHANGE col_name new_name[,col_name new_name...]}
 ```
@@ -307,84 +314,80 @@ Return:
 ```	
 
 
-###### 4.5. TRUNCATE Syntax
+> ###### 4.6. TRUNCATE Syntax
 
- Truncate a table.
-
+Truncate a table.
+```php
 	TRUNCATE {tbl_name}
-
- Example
-
-	Query:
-		TRUNCATE test
-	
-	Return: 
-		Array(
-			[notice] => Array(
-				[0] => Command Successfully
-			)
+```
+Example
+```sql
+	TRUNCATE test
+```
+```php
+	Array(
+		[notice] => Array(
+			[0] => Command Successfully
 		)
-	
+	)
+```	
 
 
-###### SELECT Syntax
+> ###### 4.7. SELECT Syntax
 
  Select the contents of a table. 
-	
+```php	
 	SELECT [DISTINCT] [COUNT] {tbl_name.col_name|col_name|*}
 		FROM {tbl_name} [[LEFT]JOIN {join_tbl_name} ON {where_condition}]
 			[WHERE {where_condition}]
 				[ORDER BY {col_name}[ASC | DESC]]
 				[LIMIT {[offset,]row_count}]
 				[INTO 'file_name']
-				
+```				
 
- Example
+Example
 
-	Query:
-		SELECT tbl1.col,tbl2.col FROM tbl1 JOIN tbl2 ON tbl2.col=tbl1.col LIMIT 2
-	
-	Return:
-		Array(
-			[0] => Array(
-				[tbl1.col] => string
-				[tbl2.col] => string
-			)
-			[1] => Array(
-				[tbl1.col] => string
-				[tbl2.col] => string
-			)
-		)		
-	
-
-
-###### COUNT Syntax
-
- Return a count matches a query.
- 
-	COUNT(col_name[,col_name...]|*)
-
- Example
- 
-	Query:
-		SELECT COUNT(*) FROM tbl1
-		
-	Return:
-		Array(
-			[0] => Array (
-				[count] => 1
-			)
+```sql
+	SELECT tbl1.col,tbl2.col FROM tbl1 JOIN tbl2 ON tbl2.col=tbl1.col LIMIT 2
+```
+```php
+	Array(
+		[0] => Array(
+			[tbl1.col] => string
+			[tbl2.col] => string
 		)
-	
+		[1] => Array(
+			[tbl1.col] => string
+			[tbl2.col] => string
+		)
+	)		
+```	
 
+> ###### 4.8. COUNT Syntax
 
-###### WHERE Syntax
+Return a count matches a query.
+```php 
+	COUNT(col_name[,col_name...]|*)
+```
+
+Example
+```sql
+		SELECT COUNT(*) FROM tbl1
+```
+```php
+	Array(
+		[0] => Array (
+			[count] => 1
+		)
+	)
+```	
+> ###### 4.9. WHERE Syntax
 
  Used to filter records. 
-	
+```php	
 	WHERE {tbl_name.col_name|col_name}{operator}{'string'}
 		[{AND|OR} {tbl_name.col_name|col_name}{operator}{'string'}...]
-	
+```	
 
  Where operators are.
  
@@ -400,23 +403,21 @@ Return:
 	LIKE      |	search for a pattern	
 
  Example
-
-	Query:
-		SELECT col FROM tbl WHERE col='needle'
-			
-	Return: 
-		Array(
-			[0] => Array (
-				[col] => needle
-			)
-			[1] => Array (
-				[col] => needle
-			)
+```sql
+	SELECT col FROM tbl WHERE col='needle'
+```
+```php
+	Array(
+		[0] => Array (
+			[col] => needle
 		)
-		
+		[1] => Array (
+			[col] => needle
+		)
+	)
+```		
 
-
-###### LIKE Syntax
+> ###### LIKE Syntax
 
  Used to filter records using a pattern. 
 	
