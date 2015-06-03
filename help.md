@@ -124,13 +124,11 @@ The Database method is optional , you can use TAKE command to select or change a
 Default user and password are respectively 'root' and 'pass'.
 All user validations will be made in databases/sqlui/users.json, so, to add or remove access to the system, manipulate this table.
 
->Example:
-
 ```php
 	$command=$sqlui->Command("UPDATE users SET password=PASSWROD('Your new password') WHERE id='0'");
 ```		
 		
->Return:
+Return:
 
 ```php
 	$command=Array(
