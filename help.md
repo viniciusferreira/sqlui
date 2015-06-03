@@ -159,9 +159,9 @@ And this print
  All posted values should be treated as strings between single or double quotes.
 
 
-###### 4.1. SHOW Syntax
+>###### 4.1. SHOW Syntax
 
->Display databases.
+Display databases.
 
 ```sql
 	SHOW DATABASES
@@ -175,7 +175,7 @@ And this print
 	)
 ```
 
->Displays database tables.
+Displays database tables.
  
 ```sql
 	SHOW TABLES
@@ -190,7 +190,7 @@ And this print
 	)
 ```
 
->Displays tables fields.
+Displays tables fields.
  
 ```sql
 	SHOW TABLE table_name
