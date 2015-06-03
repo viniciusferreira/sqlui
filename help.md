@@ -443,7 +443,7 @@ Example
 	)
 ```		
 
-> ###### 4.10 LIKE Syntax
+> ###### 4.10. LIKE Syntax
 
 Used to filter records using a pattern. 
 
@@ -552,5 +552,55 @@ Example:
 		)
 	)
 ```	
+
+> ###### 4.14. PASSWORD Syntax
+
+Encrypts you text using SQLui Password.
+
+```php 
+	PASSWORD(col_name|'string')
+```
+
+4.14.1 Apply encryption in the selected field.
+```sql
+	SELECT PASSWORD(field) FROM tbl1
+```
+```php
+	Array(
+		[0] => Array (
+			[0] => 8c772c65c6e2f5a92cf18fb01688cd7b
+		)
+	)
+```
+
+4.14.2 Apply encryption on update or insert.
+```sql
+	INSERT INTO users VALUES('1','name',PASSWORD('password'))
+```
+or
+```sql
+	UPDATE users SET password=PASSWORD('password')
+```
+```php
+	Array(
+		[notice] => Array (
+			[0] => Command Successfully
+		)
+	)
+```
+
+4.14.3 Apply encryption on where clause.
+```sql
+	SELECT * FROM users WHERE password=PASSWORD('pass')
+```
+```php
+	Array(
+		[0] => Array (
+			[0] => 0
+			[0] => user
+			[0] => 8c772c65c6e2f5a92cf18fb01688cd7b
+		)
+	)
+```
 
 &copy; 2015 SQLui. All rights reserved.
