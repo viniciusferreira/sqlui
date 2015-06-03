@@ -159,29 +159,53 @@ And this print
  All posted values should be treated as strings between single or double quotes.
 
 
+###### 4.1. SHOW Syntax
 
-###### SHOW TABLES Syntax
+>Display databases.
 
- Displays database tables.
- 
-	SHOW TABLES
-	
- Example
- 
-	Query:
-		SHOW TABLES
-	
-	Return:
-		Array(
-			[0] => Array(
-				[0] => levels
-				[1] => users
-			)
+```sql
+	SHOW DATABASES
+```
+```php
+	Array(
+		[0] => Array(
+			[0] => database_name
+			[1] => database_name
 		)
+	)
+```
 
+>Displays database tables.
+ 
+```sql
+	SHOW TABLES
+```
+```php
+	Array(
+		[0] => Array(
+			[0] => table_name
+			[1] => table_name
+			...
+		)
+	)
+```
 
+>Displays tables fields.
+ 
+```sql
+	SHOW TABLE table_name
+```
+```php
+	Array(
+		[0] => Array(
+			[0] => field_name
+			[1] => field_name
+			...
+		)
+	)
+```
 
-###### CREATE TABLE Syntax
+###### 4.2. CREATE TABLE Syntax
 
  Creates a new table.
  
