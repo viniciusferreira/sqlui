@@ -1,0 +1,27 @@
+img{vertical-align:middle;cursor:hand}
+form{display:inline}
+td{font-family:verdana}
+
+.title{background-color:#FF6600;font:bold 100% Verdana;color:#FFFFFF}
+.commum{color:white;font-size:90%}
+
+.button{background-color:#8AB14E;border:outset #B5D880 1px;color:white}
+.text{background-color:#F3FFE2;border:inset #B5D880 1px;color:#60A001;width:100%}			
+
+.outTable{width:100%;border-spacing:0}
+.outHead{background-color:#FF934C;font:90% Verdana;color:white}
+.outRegister{background-color:#FFEEE4}
+.outRegister:hover{background-color:#FFF3EC}
+.outField{font:80% Verdana;border-bottom:dotted #FF934C 1px;color:#666666}
+.outCommand{text-decoration:none}
+
+.hand{cursor:hand}
+
+.boxTable{border:outset #FF6600 1px;color:#FFFFFF;border-spacing:0;background-color:#FF934C}
+.boxTitle{font-weight:bold;font-size:95%;color:#FFFFF;padding:5px;background-color:#FF6600}
+.boxContent{color:#FFFFFF;font-size:85%}
+
+.c1{background-color:#FFFFFF}
+.c2{background-color:#FFEEE4}
+.c3{background-color:#FF934C}
+.c4{background-color:#FF6600}

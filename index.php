@@ -1,45 +1,55 @@
-<?PHP
-require 'sqlui.class.php';
+<?
+error_reporting(E_ALL);
+require 'class/sqlui.class.php';
 
-function getmicrotime(){ 
-    list($usec, $sec) = explode(" ",microtime()); 
-    return ((float)$usec + (float)$sec); 
+function CLui($variavel){
+	$resultado='';
+	for($i=0;$i<=strlen($variavel);$i+=2)$resultado.=substr($variavel,$i+1,1).''.substr($variavel,$i,1);
+	return $resultado;
 }
-$tempo_no_inicio=getmicrotime();
-
 $sqlui=false;
 if (!$sqlui) $sqlui = new SQLui();
 $sqlui->Connect('root','pass');
-$sqlui->Database('sqlui');
-
-$query=isset($_POST['query'])?$_POST['query']:'';
-$command=$sqlui->Command($query);
-
-$tempo=getmicrotime()-$tempo_no_inicio;
-
-ECHO "<HTML>
+$query=isset($_POST['query'])?$_POST['query']:(isset($_GET['query'])?$_GET['query']:'SHOW DATABASES');
+if(isset($_REQUEST['query'])){
+	$response=$sqlui->Command(CLui($query));
+	die(json_encode($response));
+}
+?>
+<HTML>
 	<HEAD>
-		<TITLE>SQLui - SQL user interface for JSON</TITLE>
+		<TITLE>SQlui - SQL user interface for JSON</TITLE>
 		<META http-equiv='Content-Type' content='text/html; charset=UTF-8'>
 		<META name='Description' content='SQLui - SQL user interface for JSON'>
 		<META name='Keywords' content='sqlui,database,sql,json,spiderpoison'>
 		<META name='Author' content='spiderpoison@gmail.com'>
-		<STYLE>
-			.title{background-color:silver;font:bold 100% Verdana;color:dimgray}
-			td{font:100% Verdana;color:gray}
-		</STYLE>
+		<LINK rel='stylesheet' href='stylesheet/sqlui.css'>
+		<SCRIPT src='javascript/box.js'></SCRIPT>
+		<SCRIPT src='javascript/basic.js'></SCRIPT>
+		<SCRIPT src='javascript/sqlui.js'></SCRIPT>
 	</HEAD>
-	<BODY bgcolor=white link=darkorange vlink=orange topmargin=0 leftmargin=0 rightmargin=0 bottommargin=0>
-		<TABLE border=1 cellspacing=0 width=100%>
+	<BODY bgcolor=white link=darkorange vlink=orange topmargin=0 leftmargin=0 onload="SQLuiQuery('SHOW DATABASES')">
+		<TABLE border=0 cellspacing=0 cellpadding=5 width=100%>
 			<TR class=title>
-				<TD class=title>SQLui - SQL user interface for JSON</TD>
+				<TD class=title><img src="image/logo.png">SQlui - SQL user interface for JSON</TD>
+			</TR><TR class=c4>
+				<TD><form method=post onsubmit="return SQLuiQuery(false,this)">
+					<table width=100%>
+						<tr>
+							<td width=3%><IMG src="image/databases.png" title='SHOW DATABASES' onclick="SQLuiQuery('SHOW DATABASES')" class=hand align=absmiddle></td>
+							<td width=93%><input type=text class=text id=query name=query size=50 value="SHOW DATABASES"></td>
+							<td width=2%><input type=image src="image/ico/16/flash.png" align=absmiddle title='Run query'></td>
+							<td width=2%><img src="image/ico/16/undo.png" onclick="SQLuiQuery(undo)" title='Previous query'></td>
+						</tr>
+					</table>
+				</form></TD>
 			</TR><TR>
-				<TD><B>Query:</B> <form method=post style=display:inline><INPUT type=text name=query size=50 value=\"$query\"><input type=submit value=ok> $tempo Sec.</form></TD>
-			</TR><TR>
-				<TD><PRE>".print_r($command,true)."</PRE></TD>
+				<TD style=padding:0 id=out></TD>
 			</TR>
 		</TABLE>
+		<SCRIPT>
+			Box('horizontal','titulo','conteudo',true)
+			Box('vertical','titulo','conteudo',false)
+		</SCRIPT>		
 	</BODY>
 </HTML>
-";
-?>
