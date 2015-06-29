@@ -13,7 +13,11 @@ class SQLui {
 	public $database='';
 	public $connected=false;
 	public $error='';
+<<<<<<< HEAD:class/sqlui.class.php
 	public $success=array('Notice'=>array('Command Successfully'));
+=======
+	public $success=array('notice'=>array('Command Successfully'));
+>>>>>>> origin/master:sqlui.class.php
 	
 	public function SQLui(){
 		if(!is_dir('database')) mkdir('database',0644);
@@ -38,7 +42,13 @@ class SQLui {
 		$this->database=isset($_COOKIE['sqlui_take_database'])?$_COOKIE['sqlui_take_database']:'';
 	}
 	public function Command($commands){
+<<<<<<< HEAD:class/sqlui.class.php
 		if(!strstr($commands,'TWIN DATABASE')&&!strstr($commands,'RENAME DATABASE')&&!strstr($commands,'DROP DATABASE')&&!strstr($commands,'CREATE DATABASE')&&!strstr($commands,'TAKE ')&&!strstr($commands,'SHOW DATABASE')&&empty($this->database)||!is_dir("database/".$this->database)) return $this->Error('No database selected');
+=======
+		if(!strstr($commands,'TAKE ')){
+			if($commands!='SHOW DATABASES'&&empty($this->database)||!is_dir("database/".$this->database)) return $this->Error('No database selected');
+		}
+>>>>>>> origin/master:sqlui.class.php
 		while(empty($this->return)){
 			if(!empty($this->error))$this->return=$this->Error();
 			if(empty($commands)){
@@ -52,7 +62,10 @@ class SQLui {
 		return $this->return;
 	}
 	public function Database($database){
+<<<<<<< HEAD:class/sqlui.class.php
 		setcookie("sqlui_take_database",$database);
+=======
+>>>>>>> origin/master:sqlui.class.php
 		$this->database=$database;
 	}
 	private function Functions($commands){	
@@ -66,6 +79,7 @@ class SQLui {
 		$arg=explode(' ',$commands);
 		if(empty($arg[1]))return $this->Error("Empty database");
 		if(!is_dir("database/$arg[1]"))return $this->Error("Database <I>$arg[1]</I> not exists");
+<<<<<<< HEAD:class/sqlui.class.php
 		$this->Database($arg[1]);
 		return $this->success;		
 	}
@@ -80,6 +94,23 @@ class SQLui {
 	private function Error($erro=''){
 		return array('Error'=>array((!empty($erro)?$erro:$this->error)));
 	}
+=======
+		setcookie("sqlui_take_database", $arg[1]);
+		$this->Database($arg[1]);
+		return $this->success;		
+	}
+	private function Open($table){
+		if(is_file("database/$this->database/$table.json")){
+			return json_decode(file_get_contents("database/$this->database/$table.json"),true);
+		} else {
+			$this->error="Table <I>$table</I> not found";
+			return '';
+		}
+	}
+	private function Error($erro=''){
+		return array('error'=>array((!empty($erro)?$erro:$this->error)));
+	}
+>>>>>>> origin/master:sqlui.class.php
 	private function Args($commands,$command,$limits){
 		$first=strpos($commands,$command)+strlen($command)+1;
 		$end=strlen($commands);
@@ -92,12 +123,21 @@ class SQLui {
 	}
 	private function Show($commands){
 		return $this->Functions($commands);	
+<<<<<<< HEAD:class/sqlui.class.php
 	}
 	private function showTable($commands){
 		$tableName=trim($this->Args($commands,'TABLE','NULL'));
 		$table=$this->Open($tableName);
 		return array('Fields'=>$this->Fields($table));
 	}
+=======
+	}
+	private function showTable($commands){
+		$tableName=trim($this->Args($commands,'TABLE','NULL'));
+		$table=$this->Open($tableName);
+		return array($this->Fields($table));
+	}
+>>>>>>> origin/master:sqlui.class.php
 	private function ShowTables(){
 		$show=array();
 		$handle=opendir("database/".$this->database);
@@ -105,13 +145,21 @@ class SQLui {
 		return array('Tables'=>$show);
 	}
 	private function ShowDatabase(){
+<<<<<<< HEAD:class/sqlui.class.php
 		return array('Selected Database'=>array($this->database));
+=======
+		return array(array($this->database));
+>>>>>>> origin/master:sqlui.class.php
 	}
 	private function ShowDatabases(){
 		$show=array();
 		$handle=opendir("database/");
 		while(false!==($file=readdir($handle)))$file!='.'&&$file!='..'&&is_dir("database/$file")?$show[]=$file:'';
+<<<<<<< HEAD:class/sqlui.class.php
 		return array('Databases'=>$show);
+=======
+		return array($show);
+>>>>>>> origin/master:sqlui.class.php
 	}
 	private function Select($commands){
 		$tableName=str_replace(' LEFT','',$this->Args($commands,'FROM','JOIN,WHERE,ORDER,LIMIT,INTO'));
@@ -237,7 +285,11 @@ class SQLui {
 		return $where;
 	}
 	private function OrderBy($table,$commands,$tableName,$fields){
+<<<<<<< HEAD:class/sqlui.class.php
 		$orderby=explode(',',$this->Args($commands,'ORDER BY','LIMIT,INTO'));
+=======
+		$orderby=explode(',',str_replace(' ASC','',str_replace(' DESC','',$this->Args($commands,'ORDER BY','LIMIT,INTO'))));
+>>>>>>> origin/master:sqlui.class.php
 		foreach($orderby as &$value)if(!strstr($value,'.'))$value="$tableName.$value";
 		$this->Check(str_replace(' ASC','',str_replace(' DESC','',$orderby)),$fields);
 		if(!empty($this->error))return $this->Error();		
@@ -340,6 +392,7 @@ class SQLui {
 	}
 	private function Create($commands){
 		return $this->Functions($commands);	
+<<<<<<< HEAD:class/sqlui.class.php
 	}
 	private function CreateDatabase($commands){
 		$command=explode(' ',$commands);
@@ -348,6 +401,16 @@ class SQLui {
 		mkdir("database/$command[2]",0644);
 		return $this->success;
 	}
+=======
+	}
+	private function CreateDatabase($commands){
+		$command=explode(' ',$commands);
+		if(!isset($command[2]))return $this->Error("No database name");
+		if(is_dir("database/$command[2]"))return $this->Error("Database already exists");
+		mkdir("database/$command[2]",0644);
+		return $this->success;
+	}
+>>>>>>> origin/master:sqlui.class.php
 	private function CreateTable($commands){
 		$command=explode(' ',$commands);
 		$arg=explode('(',substr($command[2],0,-1));
@@ -357,15 +420,23 @@ class SQLui {
 		foreach(explode(',',$arg[1]) as $value)$array[$value]='';
 		$this->File($tableName,array($array));
 		return $this->success;
+<<<<<<< HEAD:class/sqlui.class.php
 	}
 	private function Drop($commands){
 		return $this->Functions($commands);	
 	}
+=======
+	}
+	private function Drop($commands){
+		return $this->Functions($commands);	
+	}
+>>>>>>> origin/master:sqlui.class.php
 	private function DropTable($commands){
 		$file="database/$this->database/".$this->Args($commands,'TABLE','NULL').".json";
 		if(!is_file($file))return $this->Error('Table not found');
 		unlink($file);
 		return $this->success;
+<<<<<<< HEAD:class/sqlui.class.php
 	}
 	private function DropDatabase($commands){
 		$command=explode(' ',$commands);	
@@ -375,6 +446,16 @@ class SQLui {
 		$this->DelTree("database/$command[2]");
 		return $this->success;
 	}	
+=======
+	}
+	private function DropDatabase($commands){
+		$command=explode(' ',$commands);
+		if(empty($command[2]))return $this->Error("No database name");
+		if($command[2]=='sqlui'||!is_dir("database/$command[2]"))return $this->Error("Invalid database name");
+		rmdir("database/$command[2]");
+		return $this->success;
+	}
+>>>>>>> origin/master:sqlui.class.php
 	private function Check($check,$fields){
 		foreach($check as $field)if(!in_array($field,$fields))$this->error="Field $field not found.";
 	}
@@ -383,7 +464,11 @@ class SQLui {
 		$function="Alter$command[3]";
 		if(!method_exists($this,$function))return $this->Error("Command <i>$command[3]</i> not implemented");
 		return $this->$function($commands);
+<<<<<<< HEAD:class/sqlui.class.php
 	}
+=======
+	}	
+>>>>>>> origin/master:sqlui.class.php
 	private function AlterAdd($commands){
 		$tableName=$this->Args($commands,'TABLE','ADD');
 		$table=$this->Open($tableName);
@@ -420,6 +505,7 @@ class SQLui {
 		$this->File($tableName,$table);
 		return $this->success;
 	}
+<<<<<<< HEAD:class/sqlui.class.php
 	private function Rename($commands){
 		$command=explode(' ',$commands);
 		$function="Rename$command[1]";
@@ -484,6 +570,18 @@ class SQLui {
 		foreach($files as $file)(is_dir("$dir/$file")&&!is_link($dir))?delTree("$dir/$file"):unlink("$dir/$file");
 		rmdir($dir);
 	}	
+=======
+	private function Password($commands){
+		preg_match_all("/(PASSWORD\\(['|\"](.+?)['|\"][\\)])/", $commands, $matches);
+		foreach($matches[2] as $key => $match)$commands=str_replace($matches[1][$key],"'".$this->PasswordKey($match)."'",$commands);
+		return $commands;
+	}
+	private function PasswordKey($key){
+		$password=sha1($key);
+		for($i=0;$i<strlen($key);$i++)$password=md5($password);
+		return $password;
+	}
+>>>>>>> origin/master:sqlui.class.php
 	private function File($table,$content){
 		$handler=fopen("database/$this->database/$table.json",'w+');
 		fwrite($handler,utf8_encode(json_encode($content)));
